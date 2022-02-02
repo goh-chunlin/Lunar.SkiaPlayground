@@ -25,7 +25,9 @@ namespace Lunar.SkiaPlayground
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Circle> _circles = new List<Circle>();
+        private bool _isDraggingCursor;
+        private readonly List<Circle> _circles = new();
+        private List<List<Dot>> _paths = new();
 
         public MainWindow()
         {
@@ -59,51 +61,83 @@ namespace Lunar.SkiaPlayground
                 canvas.DrawCircle(circle.CenterX, circle.CenterY, circle.Radius, paint);
             }
 
-            //// Create the path
-            //SKPath path = new SKPath();
+            foreach (var dots in _paths) 
+            {
+                if (dots.Count == 0) continue;
 
-            //// Define the first contour
-            //path.MoveTo(0.5f * info.Width, 0.1f * info.Height);
-            //path.LineTo(0.2f * info.Width, 0.4f * info.Height);
-            //path.LineTo(0.8f * info.Width, 0.4f * info.Height);
-            //path.LineTo(0.5f * info.Width, 0.1f * info.Height);
+                SKPath path = new();
 
-            //// Define the second contour
-            //path.MoveTo(0.5f * info.Width, 0.6f * info.Height);
-            //path.LineTo(0.2f * info.Width, 0.9f * info.Height);
-            //path.LineTo(0.8f * info.Width, 0.9f * info.Height);
-            ////path.Close();
+                path.MoveTo(dots.First().X, dots.First().Y);
 
-            //// Create two SKPaint objects
-            //SKPaint strokePaint = new SKPaint
-            //{
-            //    Style = SKPaintStyle.Stroke,
-            //    Color = SKColors.Magenta,
-            //    StrokeWidth = 50
-            //};
+                for (int i = 1; i < dots.Count; i++) 
+                {
+                    path.LineTo(dots[i].X, dots[i].Y);
+                }
 
-            //canvas.DrawPath(path, strokePaint);
+                SKPaint strokePaint = new SKPaint
+                {
+                    Style = SKPaintStyle.Stroke,
+                    Color = dots.First().BorderColor,
+                    StrokeWidth = 6
+                };
+
+                canvas.DrawPath(path, strokePaint);
+            }
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var cursorPosition = e.GetPosition(this);
+            _isDraggingCursor = true;
 
             var dpiScale = VisualTreeHelper.GetDpi(this);
 
             var dpiScaleX = dpiScale.DpiScaleX;
             var dpiScaleY = dpiScale.DpiScaleY;
 
+            //var rand = new Random();
+
+            //var color = new SKColor((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
+
+            //_circles.Add(new Circle() { 
+            //    CenterX = (float)(cursorPosition.X * dpiScaleX), 
+            //    CenterY = (float)(cursorPosition.Y * dpiScaleY),
+            //    Radius = rand.NextSingle() * 200,
+            //    BorderColor = color,
+            //});
+
             var rand = new Random();
 
             var color = new SKColor((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
 
-            _circles.Add(new Circle() { 
-                CenterX = (float)(cursorPosition.X * dpiScaleX), 
-                CenterY = (float)(cursorPosition.Y * dpiScaleY),
-                Radius = rand.NextSingle() * 200,
-                BorderColor = color,
-            });
+            var firstDot = new Dot(cursorPosition.X * dpiScaleX, cursorPosition.Y * dpiScaleX);
+            firstDot.BorderColor = color;
+
+            _paths.Add(new List<Dot> { firstDot } );
+
+            Canvas.InvalidateVisual();
+        }
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isDraggingCursor) 
+            {
+                var cursorPosition = e.GetPosition(this);
+
+                var dpiScale = VisualTreeHelper.GetDpi(this);
+
+                var dpiScaleX = dpiScale.DpiScaleX;
+                var dpiScaleY = dpiScale.DpiScaleY;
+
+                _paths.Last().Add(new Dot(cursorPosition.X * dpiScaleX, cursorPosition.Y * dpiScaleX));
+
+                Canvas.InvalidateVisual();
+            }
+        }
+
+        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _isDraggingCursor = false;
 
             Canvas.InvalidateVisual();
         }
