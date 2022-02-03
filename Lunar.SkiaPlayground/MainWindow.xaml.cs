@@ -29,6 +29,9 @@ namespace Lunar.SkiaPlayground
         private readonly List<Circle> _circles = new();
         private List<List<Dot>> _paths = new();
 
+        const float strokeWidth = 10;
+        static readonly float[] dashArray = { 0, 2 * strokeWidth };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,8 +81,35 @@ namespace Lunar.SkiaPlayground
                 {
                     Style = SKPaintStyle.Stroke,
                     Color = dots.First().BorderColor,
+                    StrokeCap = SKStrokeCap.Square,
                     StrokeWidth = 6
                 };
+
+                SKPathEffect translatePathEffect = SKPathEffect.Create1DPath(
+                    SKPath.ParseSvgPathData("M -10 -10 L 10 -10, 10 10, -10 10 Z"),
+                    24, 0, SKPath1DPathEffectStyle.Translate);
+
+                SKPathEffect rotatePathEffect = SKPathEffect.Create1DPath(
+                    SKPath.ParseSvgPathData("M -10 0 L 0 -10, 10 0, 0 10 Z"),
+                    20, 0, SKPath1DPathEffectStyle.Rotate);
+
+                SKPathEffect morphPathEffect = SKPathEffect.Create1DPath(
+                    SKPath.ParseSvgPathData("M -25 -10 L 25 -10, 25 10, -25 10 Z"),
+                    55, 0, SKPath1DPathEffectStyle.Morph);
+
+                // Animate the phase; t is 0 to 1 every second
+                TimeSpan timeSpan = new TimeSpan(DateTime.Now.Ticks);
+                float t = (float)(timeSpan.TotalSeconds % 1 / 1);
+                float phase = -t * 2 * strokeWidth;
+
+                //// Create dotted line effect based on dash array and phase
+                //using (SKPathEffect dashEffect = SKPathEffect.CreateDash(dashArray, phase))
+                //{
+                //    // Set it to the paint object
+                //    strokePaint.PathEffect = dashEffect;
+                //}
+
+                strokePaint.PathEffect = morphPathEffect;
 
                 canvas.DrawPath(path, strokePaint);
             }
@@ -95,20 +125,17 @@ namespace Lunar.SkiaPlayground
             var dpiScaleX = dpiScale.DpiScaleX;
             var dpiScaleY = dpiScale.DpiScaleY;
 
-            //var rand = new Random();
-
-            //var color = new SKColor((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
-
-            //_circles.Add(new Circle() { 
-            //    CenterX = (float)(cursorPosition.X * dpiScaleX), 
-            //    CenterY = (float)(cursorPosition.Y * dpiScaleY),
-            //    Radius = rand.NextSingle() * 200,
-            //    BorderColor = color,
-            //});
-
             var rand = new Random();
 
             var color = new SKColor((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
+
+            _circles.Add(new Circle()
+            {
+                CenterX = (float)(cursorPosition.X * dpiScaleX),
+                CenterY = (float)(cursorPosition.Y * dpiScaleY),
+                Radius = rand.NextSingle() * 200,
+                BorderColor = color,
+            });
 
             var firstDot = new Dot(cursorPosition.X * dpiScaleX, cursorPosition.Y * dpiScaleX);
             firstDot.BorderColor = color;
