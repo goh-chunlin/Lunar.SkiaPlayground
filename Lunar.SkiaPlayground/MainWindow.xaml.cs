@@ -210,18 +210,20 @@ namespace Lunar.SkiaPlayground
                 {
                     if (dots.Count == 0) continue;
 
+                    points.Clear();
+
                     for (int i = 1; i < dots.Count; i++)
                     {
                         points.Add(new SKPoint(dots[i].X, dots[i].Y));
                     }
-                }
 
-                using (SKPath pathLinkedChain = new SKPath())
-                {
-                    pathLinkedChain.AddPoly(points.ToArray(), false);
+                    using (SKPath pathLinkedChain = new SKPath())
+                    {
+                        pathLinkedChain.AddPoly(points.ToArray(), false);
 
-                    // And render that path with the linksPaint object
-                    canvas.DrawPath(pathLinkedChain, linksPaint);
+                        // And render that path with the linksPaint object
+                        canvas.DrawPath(pathLinkedChain, linksPaint);
+                    }
                 }
             }
         }
