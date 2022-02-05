@@ -67,109 +67,8 @@ namespace Lunar.SkiaPlayground
                 canvas.DrawCircle(circle.CenterX, circle.CenterY, circle.Radius, paint);
             }
 
-            foreach (var dots in _paths) 
-            {
-                if (dots.Count == 0) continue;
-
-                SKPath path = new();
-
-                path.MoveTo(dots.First().X, dots.First().Y);
-
-                for (int i = 1; i < dots.Count; i++) 
-                {
-                    path.LineTo(dots[i].X, dots[i].Y);
-                }
-
-                SKPaint strokePaint = new SKPaint
-                {
-                    Style = SKPaintStyle.Stroke,
-                    Color = dots.First().BorderColor,
-                    StrokeCap = SKStrokeCap.Square,
-                    StrokeWidth = 6
-                };
-
-                SKPathEffect translatePathEffect = SKPathEffect.Create1DPath(
-                    SKPath.ParseSvgPathData("M -10 -10 L 10 -10, 10 10, -10 10 Z"),
-                    24, 0, SKPath1DPathEffectStyle.Translate);
-
-                SKPathEffect rotatePathEffect = SKPathEffect.Create1DPath(
-                    SKPath.ParseSvgPathData("M -10 0 L 0 -10, 10 0, 0 10 Z"),
-                    20, 0, SKPath1DPathEffectStyle.Rotate);
-
-                SKPathEffect morphPathEffect = SKPathEffect.Create1DPath(
-                    SKPath.ParseSvgPathData("M -25 -10 L 25 -10, 25 10, -25 10 Z"),
-                    55, 0, SKPath1DPathEffectStyle.Morph);
-
-                // Animate the phase; t is 0 to 1 every second
-                TimeSpan timeSpan = new TimeSpan(DateTime.Now.Ticks);
-                float t = (float)(timeSpan.TotalSeconds % 1 / 1);
-                float phase = -t * 2 * strokeWidth;
-
-                //// Create dotted line effect based on dash array and phase
-                //using (SKPathEffect dashEffect = SKPathEffect.CreateDash(dashArray, phase))
-                //{
-                //    // Set it to the paint object
-                //    strokePaint.PathEffect = dashEffect;
-                //}
-
-                strokePaint.PathEffect = morphPathEffect;
-
-                canvas.DrawPath(path, strokePaint);
-
-                Func<float, float, float> catenary = (float a, float x) => (float)(a * Math.Cosh(x / a));
-
-                SKPaint linksPaint = new SKPaint
-                {
-                    Color = SKColors.Silver
-                };
-
-                // Create the path for the individual links
-                SKRect outer = new SKRect(-linkRadius, -linkRadius, linkRadius, linkRadius);
-                SKRect inner = outer;
-                inner.Inflate(-linkThickness, -linkThickness);
-
-                using (SKPath linkPath = new SKPath())
-                {
-                    linkPath.AddArc(outer, 55, 160);
-                    linkPath.ArcTo(inner, 215, -160, false);
-                    linkPath.Close();
-
-                    linkPath.AddArc(outer, 235, 160);
-                    linkPath.ArcTo(inner, 395, -160, false);
-                    linkPath.Close();
-
-                    // Set that path as the 1D path effect for linksPaint
-                    linksPaint.PathEffect =
-                        SKPathEffect.Create1DPath(linkPath, 1.3f * linkRadius, 0,
-                                                  SKPath1DPathEffectStyle.Rotate);
-
-                    // Width and height of catenary
-                    int width = info.Width;
-                    float height = info.Height - linkRadius;
-
-                    // Find the optimum 'a' for this width and height
-                    float optA = FindOptimumA(width, height);
-
-                    // Calculate the vertical offset for that value of 'a'
-                    float yOffset = catenary(optA, -width / 2);
-
-                    // Create a path for the catenary
-                    SKPoint[] points = new SKPoint[width];
-
-                    for (int x = 0; x < width; x++)
-                    {
-                        points[x] = new SKPoint(x, yOffset - catenary(optA, x - width / 2));
-                    }
-
-                    using (SKPath pathLinkedChain = new SKPath())
-                    {
-                        pathLinkedChain.AddPoly(points, false);
-
-                        // And render that path with the linksPaint object
-                        canvas.DrawPath(pathLinkedChain, linksPaint);
-                    }
-                }
-            }
+            //DrawNormalPath(canvas);
+            DrawChainedPath(canvas);
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -226,29 +125,105 @@ namespace Lunar.SkiaPlayground
             Canvas.InvalidateVisual();
         }
 
-        float FindOptimumA(float width, float height)
+        private void DrawNormalPath(SKCanvas canvas)
         {
-            Func<float, float> left = (float a) => (float)Math.Cosh(width / 2 / a);
-            Func<float, float> right = (float a) => 1 + height / a;
-
-            float gtA = 1;         // starting value for left > right
-            float ltA = 10000;     // starting value for left < right
-
-            while (Math.Abs(gtA - ltA) > 0.1f)
+            foreach (var dots in _paths)
             {
-                float avgA = (gtA + ltA) / 2;
+                if (dots.Count == 0) continue;
 
-                if (left(avgA) < right(avgA))
+                SKPath path = new();
+
+                path.MoveTo(dots.First().X, dots.First().Y);
+
+                for (int i = 1; i < dots.Count; i++)
                 {
-                    ltA = avgA;
+                    path.LineTo(dots[i].X, dots[i].Y);
                 }
-                else
+
+                SKPaint strokePaint = new SKPaint
                 {
-                    gtA = avgA;
+                    Style = SKPaintStyle.Stroke,
+                    Color = dots.First().BorderColor,
+                    StrokeCap = SKStrokeCap.Square,
+                    StrokeWidth = 6
+                };
+
+                SKPathEffect translatePathEffect = SKPathEffect.Create1DPath(
+                    SKPath.ParseSvgPathData("M -10 -10 L 10 -10, 10 10, -10 10 Z"),
+                    24, 0, SKPath1DPathEffectStyle.Translate);
+
+                SKPathEffect rotatePathEffect = SKPathEffect.Create1DPath(
+                    SKPath.ParseSvgPathData("M -10 0 L 0 -10, 10 0, 0 10 Z"),
+                    20, 0, SKPath1DPathEffectStyle.Rotate);
+
+                SKPathEffect morphPathEffect = SKPathEffect.Create1DPath(
+                    SKPath.ParseSvgPathData("M -25 -10 L 25 -10, 25 10, -25 10 Z"),
+                    55, 0, SKPath1DPathEffectStyle.Morph);
+
+                // Animate the phase; t is 0 to 1 every second
+                TimeSpan timeSpan = new TimeSpan(DateTime.Now.Ticks);
+                float t = (float)(timeSpan.TotalSeconds % 1 / 1);
+                float phase = -t * 2 * strokeWidth;
+
+                //// Create dotted line effect based on dash array and phase
+                //using (SKPathEffect dashEffect = SKPathEffect.CreateDash(dashArray, phase))
+                //{
+                //    // Set it to the paint object
+                //    strokePaint.PathEffect = dashEffect;
+                //}
+
+                strokePaint.PathEffect = morphPathEffect;
+
+                canvas.DrawPath(path, strokePaint);
+            }
+        }
+
+        private void DrawChainedPath(SKCanvas canvas)
+        {
+            SKPaint linksPaint = new SKPaint
+            {
+                Color = SKColors.Silver
+            };
+
+            // Create the path for the individual links
+            SKRect outer = new SKRect(-linkRadius, -linkRadius, linkRadius, linkRadius);
+            SKRect inner = outer;
+            inner.Inflate(-linkThickness, -linkThickness);
+
+            using (SKPath linkPath = new SKPath())
+            {
+                linkPath.AddArc(outer, 55, 160);
+                linkPath.ArcTo(inner, 215, -160, false);
+                linkPath.Close();
+
+                linkPath.AddArc(outer, 235, 160);
+                linkPath.ArcTo(inner, 395, -160, false);
+                linkPath.Close();
+
+                // Set that path as the 1D path effect for linksPaint
+                linksPaint.PathEffect =
+                    SKPathEffect.Create1DPath(linkPath, 1.3f * linkRadius, 0,
+                                              SKPath1DPathEffectStyle.Rotate);
+
+                List<SKPoint> points = new List<SKPoint>();
+                foreach (var dots in _paths)
+                {
+                    if (dots.Count == 0) continue;
+
+                    for (int i = 1; i < dots.Count; i++)
+                    {
+                        points.Add(new SKPoint(dots[i].X, dots[i].Y));
+                    }
+                }
+
+                using (SKPath pathLinkedChain = new SKPath())
+                {
+                    pathLinkedChain.AddPoly(points.ToArray(), false);
+
+                    // And render that path with the linksPaint object
+                    canvas.DrawPath(pathLinkedChain, linksPaint);
                 }
             }
-
-            return (gtA + ltA) / 2;
         }
     }
 }
