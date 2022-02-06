@@ -25,6 +25,8 @@ namespace Lunar.SkiaPlayground
     /// </summary>
     public partial class MainWindow : Window
     {
+        Stopwatch stopwatch = new Stopwatch();
+
         private bool _isDraggingCursor;
         private readonly List<Circle> _circles = new();
         private List<List<Dot>> _paths = new();
@@ -35,16 +37,26 @@ namespace Lunar.SkiaPlayground
         const float linkRadius = 30;
         const float linkThickness = 5;
 
+        bool pageIsActive;
+        float scale;
+
         public MainWindow()
         {
             InitializeComponent();
 
             this.Loaded += MainWindow_Loaded;
+            this.Closed += MainWindow_Closed;
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            pageIsActive = true;
+            await AnimationLoopAsync();
+        }
 
+        private void MainWindow_Closed(object? sender, EventArgs e)
+        {
+            pageIsActive = false;
         }
 
         private void Canvas_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs args)
@@ -97,8 +109,6 @@ namespace Lunar.SkiaPlayground
             firstDot.BorderColor = color;
 
             _paths.Add(new List<Dot> { firstDot } );
-
-            Canvas.InvalidateVisual();
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -113,16 +123,12 @@ namespace Lunar.SkiaPlayground
                 var dpiScaleY = dpiScale.DpiScaleY;
 
                 _paths.Last().Add(new Dot(cursorPosition.X * dpiScaleX, cursorPosition.Y * dpiScaleX));
-
-                Canvas.InvalidateVisual();
             }
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _isDraggingCursor = false;
-
-            Canvas.InvalidateVisual();
         }
 
         private void DrawNormalPath(SKCanvas canvas)
@@ -226,6 +232,22 @@ namespace Lunar.SkiaPlayground
                     }
                 }
             }
+        }
+
+        private async Task AnimationLoopAsync()
+        {
+            stopwatch.Start();
+
+            while (pageIsActive)
+            {
+                double cycleTime = 5;
+                double t = stopwatch.Elapsed.TotalSeconds % cycleTime / cycleTime;
+                scale = (1 + (float)Math.Sin(2 * Math.PI * t)) / 2;
+                Canvas.InvalidateVisual();
+                await Task.Delay(TimeSpan.FromSeconds(1.0 / 30));
+            }
+
+            stopwatch.Stop();
         }
     }
 }
