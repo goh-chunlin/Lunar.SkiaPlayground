@@ -38,7 +38,6 @@ namespace Lunar.SkiaPlayground
         const float linkThickness = 5;
 
         bool pageIsActive;
-        float scale;
 
         public MainWindow()
         {
@@ -240,9 +239,6 @@ namespace Lunar.SkiaPlayground
 
             while (pageIsActive)
             {
-                double cycleTime = 5;
-                double t = stopwatch.Elapsed.TotalSeconds % cycleTime / cycleTime;
-                scale = (1 + (float)Math.Sin(2 * Math.PI * t)) / 2;
                 Canvas.InvalidateVisual();
                 await Task.Delay(TimeSpan.FromSeconds(1.0 / 30));
             }
