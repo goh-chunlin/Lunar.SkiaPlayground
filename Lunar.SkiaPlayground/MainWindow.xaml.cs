@@ -245,5 +245,14 @@ namespace Lunar.SkiaPlayground
 
             stopwatch.Stop();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Type windowType = Type.GetType($"Lunar.SkiaPlayground.{((MenuItem)sender).Tag}Window");
+            
+            Window window = (Window)Activator.CreateInstance(windowType);
+
+            if (window != null) window.Show();
+        }
     }
 }

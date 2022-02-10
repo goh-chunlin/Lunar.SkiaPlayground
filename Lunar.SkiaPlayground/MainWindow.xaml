@@ -10,12 +10,23 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    <Grid>
-        <skia:SKElement
-            Name="Canvas"
-            MouseDown="Canvas_MouseDown"
-            MouseMove="Canvas_MouseMove"
-            MouseUp="Canvas_MouseUp"
-            PaintSurface="Canvas_PaintSurface" />
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Animation">
+                <MenuItem
+                    Click="MenuItem_Click"
+                    Header="_Flip"
+                    Tag="AnimationFlip" />
+            </MenuItem>
+        </Menu>
+
+        <Grid>
+            <skia:SKElement
+                Name="Canvas"
+                MouseDown="Canvas_MouseDown"
+                MouseMove="Canvas_MouseMove"
+                MouseUp="Canvas_MouseUp"
+                PaintSurface="Canvas_PaintSurface" />
+        </Grid>
+    </DockPanel>
 </Window>
