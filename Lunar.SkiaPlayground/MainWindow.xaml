@@ -17,6 +17,11 @@
                     Click="MenuItem_Click"
                     Header="_Flip"
                     Tag="AnimationFlip" />
+
+                <MenuItem
+                    Click="MenuItem_Click"
+                    Header="_Countdown Clock"
+                    Tag="AnimationCountdownClock" />
             </MenuItem>
         </Menu>
 
