@@ -23,6 +23,12 @@
                     Header="_Countdown Clock"
                     Tag="AnimationCountdownClock" />
             </MenuItem>
+            <MenuItem Header="_UI">
+                <MenuItem
+                    Click="MenuItem_Click"
+                    Header="_Black Crystal"
+                    Tag="BlackCrystal" />
+            </MenuItem>
         </Menu>
 
         <Grid>
