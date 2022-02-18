@@ -8,187 +8,311 @@
     Title="BlackCrystalWindow"
     Width="958"
     Height="672"
+    MinWidth="958"
+    MinHeight="672"
     Background="{StaticResource LightBackground}"
     mc:Ignorable="d">
     <Grid>
-        <Button
-            Name="Button1"
-            Width="140"
-            Height="41"
-            Margin="12,101,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Focus"
-            Foreground="White" />
-        <Button
-            Name="Button2"
-            Width="140"
-            Height="39"
-            Margin="12,148,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Disabled"
-            Foreground="White"
-            IsEnabled="False" />
-        <TextBox
-            Name="TextBox1"
-            Width="175"
-            Height="71"
-            Margin="165,85,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            AcceptsReturn="True"
-            Foreground="White"
-            HorizontalScrollBarVisibility="Visible"
-            TextWrapping="Wrap"
-            VerticalScrollBarVisibility="Visible" />
-        <TextBox
-            Name="TextBox2"
-            Width="175"
-            Height="25"
-            Margin="165,162,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            AcceptsReturn="True"
-            Foreground="White"
-            HorizontalScrollBarVisibility="Hidden"
-            IsEnabled="False"
-            Text="Disabled"
-            VerticalScrollBarVisibility="Hidden" />
-        <Button
-            Name="Button3"
-            Width="140"
-            Height="41"
-            Margin="12,54,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Normal"
-            Foreground="White" />
-        <TextBox
-            Name="TextBox3"
-            Width="175"
-            Height="25"
-            Margin="165,54,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Foreground="White"
-            VerticalScrollBarVisibility="Disabled" />
-        <Label
-            Name="Label1"
-            Width="140"
-            Height="28"
-            Margin="12,12,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            Content="Button"
-            FontWeight="bold"
-            Foreground="White" />
-        <Label
-            Name="Label2"
-            Width="175"
-            Height="28"
-            Margin="165,12,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            Content="TextBox"
-            FontWeight="bold"
-            Foreground="White" />
-        <ComboBox
-            Name="ComboBox1"
-            Width="181"
-            Height="25"
-            Margin="353,61,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            IsEditable="True" />
-        <Label
-            Name="Label3"
-            Width="175"
-            Height="28"
-            Margin="353,11,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            Content="ComboBox"
-            FontWeight="bold"
-            Foreground="White" />
-        <ComboBox
-            Name="ComboBox2"
-            Width="181"
-            Height="25"
-            Margin="353,107,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
-        <ComboBox
-            Name="ComboBox3"
-            Width="181"
-            Height="25"
-            Margin="353,153,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            IsEnabled="False"
-            Text="Disabled" />
-        <DataGrid
-            Name="grilla"
-            Width="522"
-            Height="157"
-            Margin="12,263,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            GridLinesVisibility="None"
-            HeadersVisibility="Column"
-            ItemsSource="{Binding Path=tabla1}">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    MinWidth="125"
-                    Binding="{Binding Path=Columna1}"
-                    Header="Columna 1" />
-                <DataGridTextColumn
-                    MinWidth="125"
-                    Binding="{Binding Path=Columna2}"
-                    Header="Columna 2" />
-                <DataGridTextColumn
-                    MinWidth="125"
-                    Binding="{Binding Path=Columna3}"
-                    Header="Columna 3" />
-                <DataGridTextColumn
-                    MinWidth="125"
-                    Binding="{Binding Path=Columna4}"
-                    Header="Columna 4" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <Label
-            Name="Label4"
-            Width="522"
-            Height="28"
-            Margin="12,229,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            Content="DATAGRID"
-            FontWeight="bold"
-            Foreground="White" />
-        <TabControl
-            Name="TabControl1"
-            Width="522"
-            Height="157"
-            Margin="12,460,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <TabItem Name="TabItem1" Header="Selected">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*" />
+            <ColumnDefinition Width="0.2*" />
+            <ColumnDefinition Width="0.2*" />
+            <ColumnDefinition Width="0.2*" />
+            <ColumnDefinition Width="0.2*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    HorizontalAlignment="Center"
+                    Content="Button"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+            <Button
+                Width="140"
+                Height="41"
+                Margin="4"
+                HorizontalAlignment="Center"
+                Content="Normal"
+                Foreground="White" />
+            <Button
+                Width="140"
+                Height="41"
+                Margin="4"
+                HorizontalAlignment="Center"
+                Content="Focus"
+                Foreground="White" />
+            <Button
+                Width="140"
+                Height="39"
+                Margin="4"
+                HorizontalAlignment="Center"
+                Content="Disabled"
+                Foreground="White"
+                IsEnabled="False" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    HorizontalAlignment="Center"
+                    Content="TextBox"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+            <TextBox
+                Width="175"
+                Height="25"
+                Margin="4"
+                Padding="5"
+                HorizontalAlignment="Center"
+                Foreground="White"
+                VerticalScrollBarVisibility="Disabled" />
+
+            <TextBox
+                Width="175"
+                Height="71"
+                Margin="4"
+                Padding="5"
+                HorizontalAlignment="Center"
+                AcceptsReturn="True"
+                Foreground="White"
+                HorizontalScrollBarVisibility="Visible"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Visible" />
+
+            <TextBox
+                Width="175"
+                Height="25"
+                Margin="4"
+                Padding="5"
+                HorizontalAlignment="Center"
+                AcceptsReturn="True"
+                Foreground="White"
+                HorizontalScrollBarVisibility="Hidden"
+                IsEnabled="False"
+                Text="Disabled"
+                VerticalScrollBarVisibility="Hidden" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="2"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    HorizontalAlignment="Center"
+                    Content="ComboBox"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+
+            <ComboBox
+                MinWidth="181"
+                Margin="4"
+                HorizontalAlignment="Center"
+                IsEditable="True" />
+
+            <ComboBox
+                Width="181"
+                Margin="4"
+                HorizontalAlignment="Center" />
+
+            <ComboBox
+                Width="181"
+                Margin="4"
+                HorizontalAlignment="Center"
+                IsEnabled="False"
+                Text="Disabled" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="3"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Content="ProgressBar"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+
+            <ProgressBar
+                Width="181"
+                Margin="4"
+                HorizontalAlignment="Center"
+                IsIndeterminate="False"
+                IsTabStop="False"
+                Orientation="Horizontal"
+                Value="75" />
+
+            <ProgressBar
+                Width="181"
+                Margin="4"
+                HorizontalAlignment="Center"
+                IsIndeterminate="True" />
+
+            <ProgressBar
+                Width="181"
+                Margin="4"
+                HorizontalAlignment="Center"
+                IsEnabled="False" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="4"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Content="ScrollBar"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+
+            <ScrollBar
+                Width="18"
+                Height="109"
+                Margin="4"
+                HorizontalAlignment="Center" />
+
+            <ScrollBar
+                Width="139"
+                Margin="4"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Content="DataGrid"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+
+            <DataGrid
+                Width="522"
+                MinHeight="157"
+                Margin="4"
+                HorizontalAlignment="Left"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                GridLinesVisibility="None"
+                HeadersVisibility="Column"
+                ItemsSource="{Binding Path=tabla1}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        MinWidth="125"
+                        Binding="{Binding Path=Columna1}"
+                        Header="Columna 1" />
+                    <DataGridTextColumn
+                        MinWidth="125"
+                        Binding="{Binding Path=Columna2}"
+                        Header="Columna 2" />
+                    <DataGridTextColumn
+                        MinWidth="125"
+                        Binding="{Binding Path=Columna3}"
+                        Header="Columna 3" />
+                    <DataGridTextColumn
+                        MinWidth="125"
+                        Binding="{Binding Path=Columna4}"
+                        Header="Columna 4" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Content="TabControl &amp; TabItem"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+
+            <TabControl
+                Width="522"
+                Height="157"
+                Margin="4"
+                HorizontalAlignment="Left">
+                <TabItem Header="Selected">
+                    <Grid />
+                </TabItem>
+                <TabItem Header="Disabled" IsEnabled="False" />
+                <TabItem
+                    Header="TabItem3"
+                    IsSelected="False"
+                    Selector.IsSelected="False" />
+                <TabItem Header="TabItem4" />
+            </TabControl>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Orientation="Vertical">
+            <Grid Margin="4">
+                <Label
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Content="GroupBox"
+                    FontWeight="bold"
+                    Foreground="White" />
+            </Grid>
+
+            <GroupBox
+                Width="365"
+                Height="354"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Header="GroupBox1"
+                IsEnabled="True">
                 <Grid />
-            </TabItem>
-            <TabItem Header="Disabled" IsEnabled="False" />
-            <TabItem
-                Header="TabItem3"
-                IsSelected="False"
-                Selector.IsSelected="False" />
-            <TabItem Header="TabItem4" />
-        </TabControl>
+            </GroupBox>
+        </StackPanel>
+        <!--
+
+
+
+
+
+
+
+
+
+
+
+
         <Label
             Name="Label5"
             Width="546"
@@ -200,44 +324,8 @@
             Content="TABCONTROL &amp; TABITEM"
             FontWeight="bold"
             Foreground="White" />
-        <ProgressBar
-            Name="ProgressBar1"
-            Width="185"
-            Height="25"
-            Margin="554,61,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            IsIndeterminate="False"
-            IsTabStop="False"
-            Orientation="Horizontal"
-            Value="75" />
-        <ProgressBar
-            Name="ProgressBar2"
-            Width="185"
-            Height="25"
-            Margin="554,107,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            IsIndeterminate="True" />
-        <ProgressBar
-            Name="ProgressBar3"
-            Width="185"
-            Height="25"
-            Margin="554,153,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            IsEnabled="False" />
-        <Label
-            Name="Label7"
-            Width="185"
-            Height="28"
-            Margin="554,12,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            Content="ProgressBar"
-            FontWeight="bold"
-            Foreground="White" />
+
+
         <Label
             Name="Label6"
             Width="370"
@@ -249,42 +337,8 @@
             Content="GROUPBOX"
             FontWeight="bold"
             Foreground="White" />
-        <GroupBox
-            Name="GroupBox1"
-            Width="365"
-            Height="354"
-            Margin="554,263,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Header="GroupBox1"
-            IsEnabled="True">
-            <Grid />
-        </GroupBox>
-        <ScrollBar
-            Name="ScrollBar1"
-            Width="18"
-            Height="109"
-            Margin="895,54,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
-        <ScrollBar
-            Name="ScrollBar2"
-            Width="139"
-            Height="18"
-            Margin="774,169,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Orientation="Horizontal" />
-        <Label
-            Name="Label8"
-            Width="161"
-            Height="28"
-            Margin="758,12,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            Content="ScrollBar"
-            FontWeight="bold"
-            Foreground="White" />
+
+
+        -->
     </Grid>
 </Window>
